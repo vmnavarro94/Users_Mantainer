@@ -1,27 +1,27 @@
 import React, { Component } from 'react'
 
+const validate = values => {
+    const errors = {}
+
+    if (!values.name) {
+        errors.name = 'This is a mandatory field'
+    }
+    if (!values.email) {
+        errors.email = 'This is a mandatory field'
+    }
+    if (!values.website) {
+        errors.website = 'This is a mandatory field'
+    }
+
+    return errors
+}
+
 class UserForm extends Component {
     constructor() {
         super()
         this.state = {
             errors: {}
         }
-    }
-
-    validate = values => {
-        const errors = {}
-
-        if(!values.name) {
-            errors.name = 'This is a mandatory field'
-        }
-        if(!values.email) {
-            errors.email = 'This is a mandatory field'
-        }
-        if(!values.website) {
-            errors.website = 'This is a mandatory field'
-        }
-
-        return errors
     }
 
     handleChange = ({ target }) => {
@@ -33,11 +33,14 @@ class UserForm extends Component {
     handleSubmit = e => {
         e.preventDefault()
         const { errors, ...noErrors } = this.state
-        const result = this.validate(noErrors)
+        const result = validate(noErrors)
 
-        this.setState({ errors: result})
+        this.setState({ errors: result })
 
-        if(!Object.keys(result).length) {
+        if (!Object.keys(result).length) {
+            const { handleSubmit } = this.props
+            //Send form
+            handleSubmit(noErrors)
             e.target.reset()
         }
     }
@@ -47,11 +50,11 @@ class UserForm extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <input placeholder="Name" name="name" onChange={this.handleChange} />
-                {errors.name && <p>{ errors.name }</p>}
+                {errors.name && <p>{errors.name}</p>}
                 <input placeholder="E-Mail" name="email" onChange={this.handleChange} />
-                {errors.email && <p>{ errors.email }</p>}
+                {errors.email && <p>{errors.email}</p>}
                 <input placeholder="Website" name="website" onChange={this.handleChange} />
-                {errors.website && <p>{ errors.website} </p>}
+                {errors.website && <p>{errors.website} </p>}
                 <input type="submit" value="Send" />
             </form>
         )

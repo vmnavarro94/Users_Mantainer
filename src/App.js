@@ -15,6 +15,17 @@ class App extends Component {
     })
   }
 
+  addNewUser = user => {
+    axios.post('https://jsonplaceholder.typicode.com/users', user)
+      .then(({ data }) => {
+        const newData = this.state.data.concat(data)
+        this.setState({
+          data: newData,
+          rute: 'list',
+        })
+      })
+  }
+
   newUser = () => {
     this.setState({ rute: 'form' })
   }
@@ -23,7 +34,7 @@ class App extends Component {
     super()
     this.state = {
       data: [],
-      rute: 'form' //form | list
+      rute: 'list' //form | list
     }
   }
 
@@ -40,7 +51,7 @@ class App extends Component {
           newUser={this.newUser}
           data={ data } 
           handleClick={ this.selectUser }/>}
-        {rute === 'form' && <UserForm />}
+        {rute === 'form' && <UserForm handleSubmit={this.addNewUser}/>}
       </div>
     )
   }
