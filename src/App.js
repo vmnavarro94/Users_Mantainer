@@ -23,7 +23,7 @@ class App extends Component {
     super()
     this.state = {
       data: [],
-      rute: 'list' //form
+      rute: 'form' //form | list
     }
   }
 
@@ -33,7 +33,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state)
     const { rute, data } = this.state
     return (
       <div className="App">
