@@ -4,7 +4,7 @@ class UserForm extends Component {
     render() {
         return (
             <div>
-                User View
+                User Form View
             </div>
         )
     }

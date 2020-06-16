@@ -8,10 +8,11 @@ const styles = {
 
 class Header extends Component {
     render() {
+        const { newUser } = this.props
         return (
             <div>
                 <h2 style={styles.inline}>Users</h2>
-                <button style={styles.inline}>New User</button>
+                <button onClick={newUser} style={styles.inline}>New User</button>
             </div>
         )
     }

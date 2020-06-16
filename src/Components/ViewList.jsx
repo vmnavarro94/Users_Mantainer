@@ -5,10 +5,11 @@ import List from './List'
 
 class ViewList extends Component {
     render() {
+        const { data, handleClick, newUser } = this.props
         return (
             <div>
-                <Header />
-                <List />
+                <Header newUser={ newUser }/>
+                <List data={ data } handleClick={ handleClick }/>
             </div>
         )
     }

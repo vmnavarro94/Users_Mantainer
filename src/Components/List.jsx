@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 
 class List extends Component {
+    handleClick = id => e => {
+        const { handleClick } = this.props
+        handleClick(id)
+    }
+
     render() {
+        const { data } = this.props
         return (
             <ul>
-                <li>User 1 <button>Edit</button></li>
-                <li>User 2 <button>Edit</button></li>
+                {data.map(user => <li key={user.id}>{user.name} <button onClick={this.handleClick(user.id)}>Edit</button></li>)}
             </ul>
         )
     }

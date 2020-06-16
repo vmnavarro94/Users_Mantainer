@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 import ViewList from './Components/ViewList'
 import UserForm from './Components/UserForm'
@@ -6,15 +7,40 @@ import UserForm from './Components/UserForm'
 import './App.css'
 
 class App extends Component {
-  state = {
-    rute: 'list' //form
+
+  selectUser = id => {
+    this.setState({
+      rute: 'form',
+      selectedUser: id
+    })
+  }
+
+  newUser = () => {
+    this.setState({ rute: 'form' })
+  }
+
+  constructor() {
+    super()
+    this.state = {
+      data: [],
+      rute: 'list' //form
+    }
+  }
+
+  componentDidMount() {
+    axios.get('https://jsonplaceholder.typicode.com/users')
+      .then(({ data }) => this.setState({ data }))
   }
 
   render() {
-    const { rute } = this.state
+    console.log(this.state)
+    const { rute, data } = this.state
     return (
       <div className="App">
-        {rute === 'list' && <ViewList />}
+        {rute === 'list' && <ViewList 
+          newUser={this.newUser}
+          data={ data } 
+          handleClick={ this.selectUser }/>}
         {rute === 'form' && <UserForm />}
       </div>
     )
