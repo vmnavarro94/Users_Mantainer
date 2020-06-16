@@ -1,10 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react'
 
-import ViewList from './Components/ViewList';
-import UserForm from './Components/UserForm';
+import ViewList from './Components/ViewList'
+import UserForm from './Components/UserForm'
 
-import './App.css';
+import './App.css'
 
 class App extends Component {
   state = {
@@ -12,13 +11,14 @@ class App extends Component {
   }
 
   render() {
+    const { rute } = this.state
     return (
       <div className="App">
-        <ViewList />
-        <UserForm />
+        {rute === 'list' && <ViewList />}
+        {rute === 'form' && <UserForm />}
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
