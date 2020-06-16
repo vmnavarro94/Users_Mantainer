@@ -1,24 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react'
+import axios from 'axios'
 
-import ViewList from './Components/ViewList';
-import UserForm from './Components/UserForm';
+import ViewList from './Components/ViewList'
+import UserForm from './Components/UserForm'
 
-import './App.css';
+import './App.css'
 
 class App extends Component {
-  state = {
-    rute: 'list' //form
+
+  selectUser = id => {
+    this.setState({
+      rute: 'form',
+      selectedUser: id
+    })
+  }
+
+  newUser = () => {
+    this.setState({ rute: 'form' })
+  }
+
+  constructor() {
+    super()
+    this.state = {
+      data: [],
+      rute: 'form' //form | list
+    }
+  }
+
+  componentDidMount() {
+    axios.get('https://jsonplaceholder.typicode.com/users')
+      .then(({ data }) => this.setState({ data }))
   }
 
   render() {
+    const { rute, data } = this.state
     return (
       <div className="App">
-        <ViewList />
-        <UserForm />
+        {rute === 'list' && <ViewList 
+          newUser={this.newUser}
+          data={ data } 
+          handleClick={ this.selectUser }/>}
+        {rute === 'form' && <UserForm />}
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
