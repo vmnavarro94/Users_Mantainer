@@ -30,6 +30,17 @@ class App extends Component {
     this.setState({ rute: 'form' })
   }
 
+  updateUser = (id, userData) => {
+    axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, userData)
+      .then(() => {
+        const newData = this.state.data.map(user => user.id === id ? userData : user)
+        this.setState({
+          data: newData,
+          rute: 'list'
+        })
+      })
+  }
+
   constructor() {
     super()
     this.state = {
@@ -44,14 +55,19 @@ class App extends Component {
   }
 
   render() {
-    const { rute, data } = this.state
+    const { rute, data, selectedUser } = this.state
+    const initialValues = selectedUser && data.find(user => user.id === selectedUser)
+
     return (
       <div className="App">
         {rute === 'list' && <ViewList 
           newUser={this.newUser}
           data={ data } 
           handleClick={ this.selectUser }/>}
-        {rute === 'form' && <UserForm handleSubmit={this.addNewUser}/>}
+        {rute === 'form' && <UserForm 
+          handleSubmit={this.addNewUser}
+          handleUpdate={this.updateUser}
+          initialValues={initialValues || {}}/>}
       </div>
     )
   }

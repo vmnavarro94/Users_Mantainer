@@ -17,10 +17,12 @@ const validate = values => {
 }
 
 class UserForm extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            errors: {}
+            ...this.state,
+            ...props.initialValues,
+            errors: {},
         }
     }
 
@@ -35,25 +37,29 @@ class UserForm extends Component {
         const { errors, ...noErrors } = this.state
         const result = validate(noErrors)
 
-        this.setState({ errors: result })
-
         if (!Object.keys(result).length) {
-            const { handleSubmit } = this.props
-            //Send form
-            handleSubmit(noErrors)
-            e.target.reset()
+            const { handleSubmit, initialValues, handleUpdate } = this.props
+            if(initialValues.id) {
+                handleUpdate(initialValues.id, noErrors)
+            } else {
+                handleSubmit(noErrors)
+            }
+        }
+        else {
+            this.setState({ errors: result })
         }
     }
 
     render() {
         const { errors } = this.state
+        const { initialValues } = this.props
         return (
             <form onSubmit={this.handleSubmit}>
-                <input placeholder="Name" name="name" onChange={this.handleChange} />
+                <input defaultValue={initialValues.name} placeholder="Name" name="name" onChange={this.handleChange} />
                 {errors.name && <p>{errors.name}</p>}
-                <input placeholder="E-Mail" name="email" onChange={this.handleChange} />
+                <input defaultValue={initialValues.email} placeholder="E-Mail" name="email" onChange={this.handleChange} />
                 {errors.email && <p>{errors.email}</p>}
-                <input placeholder="Website" name="website" onChange={this.handleChange} />
+                <input defaultValue={initialValues.website} placeholder="Website" name="website" onChange={this.handleChange} />
                 {errors.website && <p>{errors.website} </p>}
                 <input type="submit" value="Send" />
             </form>
